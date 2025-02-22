@@ -1,7 +1,5 @@
 const fs = require('fs');
 const axios = require('axios');
-import cfonts from "cfonts";
-import chalk from 'chalk';
 
 async function main(numberOfInteractions) {
   cfonts.say('ADB Node', {
