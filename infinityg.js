@@ -77,7 +77,7 @@ async function claimTask(taskId) {
 async function runBot() {
   try {
     // Logo ထည့်တဲ့နေရာ
-    cfonts.say('InfinityG Bot', {
+    cfonts.say('ADB Node', {
       font: 'block',
       align: 'center',
       colors: ['cyan', 'magenta'],
