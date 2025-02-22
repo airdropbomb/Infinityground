@@ -1,5 +1,21 @@
 const fs = require('fs');
 const axios = require('axios');
+import cfonts from "cfonts";
+import chalk from 'chalk';
+
+async function main(numberOfInteractions) {
+  cfonts.say('ADB Node', {
+    font: 'block',
+    align: 'center',
+    colors: ['cyan', 'magenta'],
+    background: 'black',
+    letterSpacing: 1,
+    lineHeight: 1,
+    space: true,
+    maxLength: '0',
+  });
+
+  console.log(chalk.green("=== Telegram Channel : ADB Node ( @airdropbombnode ) ===\n"));
 
 const token = fs.readFileSync('token.txt', 'utf8').trim();
 
