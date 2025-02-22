@@ -1,21 +1,7 @@
 const fs = require('fs');
 const axios = require('axios');
-const cfonts = require('cfonts');
-const chalk = require('chalk');
-
-async function main(numberOfInteractions) {
-  cfonts.say('ADB Node', {
-    font: 'block',
-    align: 'center',
-    colors: ['cyan', 'magenta'],
-    background: 'black',
-    letterSpacing: 1,
-    lineHeight: 1,
-    space: true,
-    maxLength: '0',
-  });
-
-  console.log(chalk.green("=== Telegram Channel : ADB Node ( @airdropbombnode ) ===\n"));
+const cfonts = require('cfonts'); // cfonts ထည့်လိုက်တယ်
+const chalk = require('chalk');   // chalk ထည့်လိုက်တယ်
 
 const token = fs.readFileSync('token.txt', 'utf8').trim();
 
@@ -90,6 +76,20 @@ async function claimTask(taskId) {
 
 async function runBot() {
   try {
+    // Logo ထည့်တဲ့နေရာ
+    cfonts.say('InfinityG Bot', {
+      font: 'block',
+      align: 'center',
+      colors: ['cyan', 'magenta'],
+      background: 'black',
+      letterSpacing: 1,
+      lineHeight: 1,
+      space: true,
+      maxLength: '0',
+    });
+
+    console.log(chalk.green("=== Telegram Channel : InfinityG Bot ( @infinitygbot ) ===\n"));
+
     console.log('Starting InfinityG bot...');
     
     await dailyCheckIn();
