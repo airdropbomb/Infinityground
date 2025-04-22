@@ -1,25 +1,17 @@
 const fs = require('fs');
 const axios = require('axios');
-const cfonts = require('cfonts');
-const chalk = require('chalk');
-
-const token = fs.readFileSync('token.txt', 'utf8').trim();
-
-const api = axios.create({
+const cfonts = require('cfonts'); // cfonts ထည့်လိုက်တယ်
+const chalk = require('chalk');   // chalk ထည့်လိုက်တယ်const token = fs.readFileSync('token.txt', 'utf8').trim();const api = axios.create({
   baseURL: 'https://api.infinityg.ai/api/v1',
   headers: {
-    'Authorization': `Bearer ${token}`,
+    'Authorization': Bearer ${token},
     'Content-Type': 'application/json',
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36',
     'Accept': '*/*',
     'Origin': 'https://www.infinityg.ai',
     'Referer': 'https://www.infinityg.ai/'
   }
-});
-
-const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-function formatResponse(response) {
+});const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));function formatResponse(response) {
   if (response.code === '90000' && response.message === '成功') {
     return {
       ...response,
@@ -28,9 +20,7 @@ function formatResponse(response) {
     };
   }
   return response;
-}
-
-async function dailyCheckIn() {
+}async function dailyCheckIn() {
   try {
     const response = await api.post('/task/checkIn/');
     const formattedResponse = formatResponse(response.data);
@@ -39,9 +29,7 @@ async function dailyCheckIn() {
   } catch (error) {
     console.error('Check-in error:', error.response?.data || error.message);
   }
-}
-
-async function getTaskList() {
+}async function getTaskList() {
   try {
     const response = await api.post('/task/list');
     const formattedResponse = formatResponse(response.data);
@@ -50,31 +38,25 @@ async function getTaskList() {
   } catch (error) {
     console.error('Get task list error:', error.response?.data || error.message);
   }
-}
-
-async function completeTask(taskId) {
+}async function completeTask(taskId) {
   try {
     const response = await api.post('/task/complete', { taskId });
     const formattedResponse = formatResponse(response.data);
-    console.log(`Task ${taskId} completed:`, formattedResponse);
+    console.log(Task ${taskId} completed:, formattedResponse);
     return formattedResponse;
   } catch (error) {
-    console.error(`Complete task ${taskId} error:`, error.response?.data || error.message);
+    console.error(Complete task ${taskId} error:, error.response?.data || error.message);
   }
-}
-
-async function claimTask(taskId) {
+}async function claimTask(taskId) {
   try {
     const response = await api.post('/task/claim', { taskId });
     const formattedResponse = formatResponse(response.data);
-    console.log(`Task ${taskId} claimed:`, formattedResponse);
+    console.log(Task ${taskId} claimed:, formattedResponse);
     return formattedResponse;
   } catch (error) {
-    console.error(`Claim task ${taskId} error:`, error.response?.data || error.message);
+    console.error(Claim task ${taskId} error:, error.response?.data || error.message);
   }
-}
-
-async function runBot() {
+}async function runBot() {
   try {
     // Logo ထည့်တဲ့နေရာ
     cfonts.say('ADB Node', {
@@ -88,82 +70,61 @@ async function runBot() {
       maxLength: '0',
     });
 
-    console.log(chalk.green("=== Telegram Channel : InfinityG Bot ( @infinitygbot ) ===\n"));
+console.log(chalk.green("=== Telegram Channel : InfinityG Bot ( @infinitygbot ) ===\n"));
 
-    console.log('Starting InfinityG bot...');
-    
-    await dailyCheckIn();
-    await sleep(2000); 
+console.log('Starting InfinityG bot...');
 
-    const taskList = await getTaskList();
-    await sleep(2000);
-    
-    // Hard-coded task IDs (invalid IDs 8 and 5 removed)
-    const taskIds = [7, 111213, 111215, 111217, 111218, 111219, 111220, 111221, 111222, 111223, 1, 6, 111214, 111224, 10, 11, 12];
+await dailyCheckIn();
+await sleep(2000); 
 
-    // Optional: Dynamic task ID filtering (uncomment to use)
-    /*
-    const taskIds = taskList.data.taskModelResponses
-      .flatMap(model => model.taskResponseList)
-      .filter(task => task.status === 0 || task.status === 2)
-      .map(task => task.taskId);
-    console.log('Dynamically selected task IDs:', taskIds);
-    */
+const taskList = await getTaskList();
+await sleep(2000);
 
-    for (const taskId of taskIds) {
-      console.log(`Processing task ID: ${taskId}`);
-      const completeResult = await completeTask(taskId);
-      await sleep(2000);
-      
-      if (completeResult && completeResult.message === 'Success') {
-        await claimTask(taskId);
-      } else {
-        console.log(`Skipping claim for task ID ${taskId} due to completion failure`);
-      }
-      await sleep(2000);
-    }
-    
-    console.log('Bot tasks completed successfully');
+const taskIds = [8, 15, 7];
+
+for (const taskId of taskIds) {
+  await completeTask(taskId);
+  await sleep(2000);
+  
+  await claimTask(taskId);
+  await sleep(2000);
+}
+
+console.log('Bot tasks completed successfully');
+
   } catch (error) {
     console.error('Bot error:', error);
   }
-}
-
-function getTimeUntilNextRun() {
+}function getTimeUntilNextRun() {
   const now = new Date();
   const tomorrow = new Date(now);
   tomorrow.setDate(tomorrow.getDate() + 1);
   tomorrow.setHours(0, 1, 0, 0); 
   return tomorrow - now;
-}
-
-function formatTimeRemaining(ms) {
+}function formatTimeRemaining(ms) {
   const seconds = Math.floor((ms / 1000) % 60);
   const minutes = Math.floor((ms / 1000 / 60) % 60);
   const hours = Math.floor((ms / 1000 / 60 / 60) % 24);
-  return `${hours}h ${minutes}m ${seconds}s`;
-}
-
-async function runBotWithCountdown() {
+  return ${hours}h ${minutes}m ${seconds}s;
+}async function runBotWithCountdown() {
   while (true) {
     await runBot();
-    
-    let timeUntilNext = getTimeUntilNextRun();
-    console.log(`\nNext run in ${formatTimeRemaining(timeUntilNext)}`);
-    
-    const countdownInterval = setInterval(() => {
-      timeUntilNext -= 1000;
-      process.stdout.write(`\rTime until next run: ${formatTimeRemaining(timeUntilNext)}`);
-      
-      if (timeUntilNext <= 0) {
-        clearInterval(countdownInterval);
-        process.stdout.write('\n');
-      }
-    }, 1000);
-    
-    await sleep(timeUntilNext);
-  }
-}
 
-console.log('Starting bot with countdown timer...');
+let timeUntilNext = getTimeUntilNextRun();
+console.log(`\nNext run in ${formatTimeRemaining(timeUntilNext)}`);
+
+const countdownInterval = setInterval(() => {
+  timeUntilNext -= 1000;
+  process.stdout.write(`\rTime until next run: ${formatTimeRemaining(timeUntilNext)}`);
+  
+  if (timeUntilNext <= 0) {
+    clearInterval(countdownInterval);
+    process.stdout.write('\n');
+  }
+}, 1000);
+
+await sleep(timeUntilNext);
+
+  }
+}console.log('Starting bot with countdown timer...');
 runBotWithCountdown();
