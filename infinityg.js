@@ -98,13 +98,18 @@ async function runBot() {
     const taskList = await getTaskList();
     await sleep(2000);
     
-    const taskIds = [8, 15, 7];
+    const taskIds = [7, 111213, 111215, 111217, 111218, 111219, 111220, 111221, 111222, 111223, 1, 6, 111214, 111224, 10, 11, 12, 8, 5,];
     
     for (const taskId of taskIds) {
-      await completeTask(taskId);
+      console.log(`Processing task ID: ${taskId}`);
+      const completeResult = await completeTask(taskId);
       await sleep(2000);
       
-      await claimTask(taskId);
+      if (completeResult && completeResult.message === 'Success') {
+        await claimTask(taskId);
+      } else {
+        console.log(`Skipping claim for task ID ${taskId} due to completion failure`);
+      }
       await sleep(2000);
     }
     
