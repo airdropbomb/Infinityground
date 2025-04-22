@@ -1,7 +1,7 @@
 const fs = require('fs');
 const axios = require('axios');
-const cfonts = require('cfonts'); // cfonts ထည့်လိုက်တယ်
-const chalk = require('chalk');   // chalk ထည့်လိုက်တယ်
+const cfonts = require('cfonts');
+const chalk = require('chalk');
 
 const token = fs.readFileSync('token.txt', 'utf8').trim();
 
@@ -98,8 +98,18 @@ async function runBot() {
     const taskList = await getTaskList();
     await sleep(2000);
     
-    const taskIds = [7, 111213, 111215, 111217, 111218, 111219, 111220, 111221, 111222, 111223, 1, 6, 111214, 111224, 10, 11, 12, 8, 5,];
-    
+    // Hard-coded task IDs (invalid IDs 8 and 5 removed)
+    const taskIds = [7, 111213, 111215, 111217, 111218, 111219, 111220, 111221, 111222, 111223, 1, 6, 111214, 111224, 10, 11, 12];
+
+    // Optional: Dynamic task ID filtering (uncomment to use)
+    /*
+    const taskIds = taskList.data.taskModelResponses
+      .flatMap(model => model.taskResponseList)
+      .filter(task => task.status === 0 || task.status === 2)
+      .map(task => task.taskId);
+    console.log('Dynamically selected task IDs:', taskIds);
+    */
+
     for (const taskId of taskIds) {
       console.log(`Processing task ID: ${taskId}`);
       const completeResult = await completeTask(taskId);
